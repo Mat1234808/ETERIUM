@@ -1,0 +1,13 @@
+[Unit]
+Description=ETHEREUM 64-bit Hardware Detection and Desktop Profile Selector
+DefaultDependencies=no
+After=local-fs.target systemd-udev-settle.service
+Before=display-manager.service lightdm.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/ethereum-hw-profile
+RemainAfterExit=yes
+
+[Install]
+WantedBy=graphical.target

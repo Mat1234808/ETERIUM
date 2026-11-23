@@ -1,0 +1,32 @@
+# Base grafica, audio e gerenciador de sessao
+xorg
+xinit
+x11-xserver-utils
+dbus-x11
+lightdm
+lightdm-gtk-greeter
+pipewire-audio
+wireplumber
+gvfs
+xdg-user-dirs
+fonts-dejavu-core
+fonts-noto-color-emoji
+arc-theme
+papirus-icon-theme
+
+# Perfil 1: Completo 64-bit (Cinnamon)
+cinnamon-core
+nemo
+gnome-terminal
+gnome-system-monitor
+network-manager-gnome
+pavucontrol
+policykit-1-gnome
+
+# Perfil 2: Intermediario / Fallback 64-bit (XFCE + Whisker)
+xfce4
+xfce4-whiskermenu-plugin
+xfce4-terminal
+thunar
+xfce4-power-manager
+xfce4-pulseaudio-plugin

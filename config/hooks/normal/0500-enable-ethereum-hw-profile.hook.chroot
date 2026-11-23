@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+
+systemctl enable ethereum-hw-profile.service
+systemctl set-default graphical.target
