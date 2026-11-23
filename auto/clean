@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -e
+
+LIVE_BUILD="/home/mateu/DISGRACA/tools/live-build-ethereum"
+export LIVE_BUILD
+
+"$LIVE_BUILD/frontend/lb" clean noauto "${@}"
