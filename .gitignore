@@ -1,0 +1,20 @@
+# estado e arquivos gerados pelo live-build
+/.build/
+/local/
+/cache/
+/chroot/
+/binary/
+
+# saídas do build (ISO e arquivos auxiliares)
+*.iso
+*.zsync
+*.contents
+*.files
+*.packages
+
+# lixo
+*.log
+*.tmp
+*.swp
+*.swo
+*~

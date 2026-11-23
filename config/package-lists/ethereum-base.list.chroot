@@ -1,0 +1,14 @@
+sudo
+locales
+nano
+less
+curl
+ca-certificates
+iproute2
+iputils-ping
+pciutils
+usbutils
+lshw
+dmidecode
+network-manager
+wpasupplicant
