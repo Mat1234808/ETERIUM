@@ -18,3 +18,6 @@
 *.swp
 *.swo
 *~
+binary.modified_timestamps
+chroot.packages.*
+*.sha256
