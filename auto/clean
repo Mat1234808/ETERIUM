@@ -3,6 +3,7 @@
 set -e
 
 LIVE_BUILD="/home/mateu/DISGRACA/tools/live-build-ethereum"
-export LIVE_BUILD
+PATH="$LIVE_BUILD/frontend:$PATH"
+export LIVE_BUILD PATH
 
 "$LIVE_BUILD/frontend/lb" clean noauto "${@}"

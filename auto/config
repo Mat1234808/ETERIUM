@@ -2,6 +2,10 @@
 
 set -e
 
+LIVE_BUILD="/home/mateu/DISGRACA/tools/live-build-ethereum"
+PATH="$LIVE_BUILD/frontend:$PATH"
+export LIVE_BUILD PATH
+
 "$LIVE_BUILD/frontend/lb" config noauto \
     --distribution trixie \
     --architectures amd64 \
@@ -10,4 +14,8 @@ set -e
     --archive-areas "main contrib non-free non-free-firmware" \
     --apt-recommends false \
     --memtest none \
-    --iso-volume ETHEREUM
+    --iso-volume ETHEREUM \
+    --image-name ethereum \
+    --iso-application "ETHEREUM Linux" \
+    --iso-publisher "ETHEREUM Project" \
+    --iso-preparer "ETHEREUM Build System"
