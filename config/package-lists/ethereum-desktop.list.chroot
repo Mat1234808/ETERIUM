@@ -21,7 +21,7 @@ gnome-terminal
 gnome-system-monitor
 network-manager-gnome
 pavucontrol
-policykit-1-gnome
+lxpolkit
 
 # Perfil 2: Intermediario / Fallback 64-bit (XFCE + Whisker)
 xfce4
