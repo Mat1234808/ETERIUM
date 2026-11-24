@@ -30,3 +30,11 @@ xfce4-terminal
 thunar
 xfce4-power-manager
 xfce4-pulseaudio-plugin
+
+# Utilitarios leves do dia a dia
+file-roller
+unzip
+p7zip-full
+ristretto
+atril
+celluloid
