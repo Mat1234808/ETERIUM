@@ -16,6 +16,6 @@ export LIVE_BUILD PATH
     --memtest none \
     --iso-volume ETHEREUM \
     --image-name ethereum \
-    --iso-application "ETHEREUM Linux" \
-    --iso-publisher "ETHEREUM Project" \
+    --iso-application "Memy Linux" \
+    --iso-publisher "Memy Project" \
     --iso-preparer "ETHEREUM Build System"
