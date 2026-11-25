@@ -6,11 +6,19 @@ OUT_DIR="$WORK_DIR/all-in-one-build"
 ISO_ROOT="$OUT_DIR/iso_root"
 FINAL_ISO="$WORK_DIR/ETHEREUM-Linux-Complete-AllInOne.iso"
 
-mkdir -p "$OUT_DIR" "$ISO_ROOT/live/amd64" "$ISO_ROOT/live/i686" "$ISO_ROOT/live/i486"
+mkdir -p "$OUT_DIR"
 
 build_branch() {
     BRANCH="$1"
     TARGET_ISO="$2"
+
+    if [ -f "$TARGET_ISO" ] && [ "${FORCE_REBUILD:-}" != "$BRANCH" ]; then
+        echo "===================================================="
+        echo ">>> [PULANDO] $BRANCH ja compilada em: $TARGET_ISO"
+        echo "===================================================="
+        return 0
+    fi
+
     echo "===================================================="
     echo ">>> Compilando branch: $BRANCH"
     echo "===================================================="
@@ -33,8 +41,11 @@ build_branch "retro-i486" "$OUT_DIR/ethereum-i486.iso"
 
 git checkout main
 
-# 2. Extrai a estrutura base de boot (UEFI + BIOS) da ISO 64-bit
+# 2. Limpa montagem anterior (se houver) e extrai a estrutura base (UEFI + BIOS)
 echo ">>> Montando estrutura unificada da ISO..."
+rm -rf "$ISO_ROOT"
+mkdir -p "$ISO_ROOT/live/amd64" "$ISO_ROOT/live/i686" "$ISO_ROOT/live/i486"
+
 xorriso -osirrox on -indev "$OUT_DIR/ethereum-amd64.iso" \
     -extract /boot "$ISO_ROOT/boot" \
     -extract /EFI "$ISO_ROOT/EFI" \
