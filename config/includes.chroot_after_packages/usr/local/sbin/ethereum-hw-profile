@@ -4,90 +4,47 @@ set -eu
 MEM_KB=$(awk '/MemTotal:/ {print $2}' /proc/meminfo)
 MEM_MB=$((MEM_KB / 1024))
 CPU_CORES=$(nproc 2>/dev/null || echo 1)
-GPU_INFO=$(lspci -nn 2>/dev/null | grep -iE 'vga|3d|display' || echo "Nenhuma GPU PCI")
+GPU_INFO=$(lspci -nn 2>/dev/null | grep -iE 'vga|3d|display' || echo "GPU ISA/VLB/PCI legada")
 
-HAS_DRM=0
-if ls /dev/dri/card* >/dev/null 2>&1; then
-    HAS_DRM=1
-fi
+PROFILE="icewm"
+REASON="Edicao Retro (i486 / Wheezy) - Perfil ultra-leve IceWM"
 
-CMDLINE_PROFILE=""
-for param in $(cat /proc/cmdline); do
-    case "$param" in
-        ethereum.profile=*)
-            CMDLINE_PROFILE="${param#ethereum.profile=}"
-            ;;
-    esac
-done
-
-PROFILE="xfce"
-REASON="Perfil intermediario/fallback 64-bit"
-
-if [ -n "$CMDLINE_PROFILE" ]; then
-    case "$CMDLINE_PROFILE" in
-        cinnamon)
-            PROFILE="cinnamon"
-            REASON="Forcado via boot (ethereum.profile=cinnamon)"
-            ;;
-        xfce)
-            PROFILE="xfce"
-            REASON="Forcado via boot (ethereum.profile=xfce)"
-            ;;
-    esac
-else
-    if [ "$HAS_DRM" -eq 1 ] && [ "$MEM_MB" -ge 4096 ] && [ "$CPU_CORES" -ge 2 ]; then
-        PROFILE="cinnamon"
-        REASON="RAM >= 4 GB (${MEM_MB} MB) com aceleracao DRM"
-    else
-        PROFILE="xfce"
-        REASON="RAM abaixo de 4 GB (${MEM_MB} MB) ou sem aceleracao DRM"
-    fi
-fi
-
-# Configura ZRAM apenas para o perfil intermediario (XFCE)
+# Ativa ZRAM (50% da RAM) diretamente via modulo do kernel 3.2
 ZRAM_STATE="disabled"
-if [ "$PROFILE" = "xfce" ]; then
-    ZRAM_STATE="enabled"
-    cat > /etc/default/zramswap << ZRAM
-ALGO=zstd
-PERCENT=50
-PRIORITY=100
-ZRAM
-    if [ -d /run/systemd/system ]; then
-        systemctl enable --now zramswap.service >/dev/null 2>&1 || systemctl restart zramswap.service >/dev/null 2>&1 || true
-    fi
-else
-    if [ -d /run/systemd/system ]; then
-        systemctl disable --now zramswap.service >/dev/null 2>&1 || true
+if modprobe zram num_devices=1 >/dev/null 2>&1; then
+    ZRAM_BYTES=$((MEM_KB * 1024 / 2))
+    if [ -w /sys/block/zram0/disksize ]; then
+        echo "$ZRAM_BYTES" > /sys/block/zram0/disksize
+        mkswap /dev/zram0 >/dev/null 2>&1 || true
+        swapon -p 100 /dev/zram0 >/dev/null 2>&1 && ZRAM_STATE="enabled" || true
     fi
 fi
 
 mkdir -p /etc/lightdm/lightdm.conf.d
 if id -u user >/dev/null 2>&1; then
     cat > /etc/lightdm/lightdm.conf.d/50-ethereum-session.conf << CONF
-[Seat:*]
+[SeatDefaults]
 autologin-user=user
 autologin-user-timeout=0
-user-session=$PROFILE
+user-session=icewm-session
 greeter-session=lightdm-gtk-greeter
 CONF
 else
     cat > /etc/lightdm/lightdm.conf.d/50-ethereum-session.conf << CONF
-[Seat:*]
-user-session=$PROFILE
+[SeatDefaults]
+user-session=icewm-session
 greeter-session=lightdm-gtk-greeter
 CONF
 fi
 
 cat > /run/ethereum-hw-profile.env << ENV
 ETHEREUM_PROFILE="$PROFILE"
-ETHEREUM_SESSION="$PROFILE"
+ETHEREUM_SESSION="icewm-session"
 ETHEREUM_MEM_MB="$MEM_MB"
 ETHEREUM_CPU_CORES="$CPU_CORES"
-ETHEREUM_HAS_DRM="$HAS_DRM"
 ETHEREUM_ZRAM="$ZRAM_STATE"
 ETHEREUM_REASON="$REASON"
 ETHEREUM_GPU="$GPU_INFO"
 ENV
 
-echo "ETHEREUM HW Profile (64-bit): profile=$PROFILE zram=$ZRAM_STATE mem=${MEM_MB}MB ($REASON)"
+echo "ETHEREUM HW Profile (Retro i486): profile=$PROFILE zram=$ZRAM_STATE mem=${MEM_MB}MB"

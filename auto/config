@@ -1,21 +1,21 @@
 #!/bin/sh
-
 set -e
 
-LIVE_BUILD="/home/mateu/DISGRACA/tools/live-build-ethereum"
-PATH="$LIVE_BUILD/frontend:$PATH"
-export LIVE_BUILD PATH
-
-"$LIVE_BUILD/frontend/lb" config noauto \
-    --distribution trixie \
-    --architectures amd64 \
-    --binary-images iso-hybrid \
-    --debian-installer none \
-    --archive-areas "main contrib non-free non-free-firmware" \
+lb config noauto \
+    --mode debian \
+    --distribution wheezy \
+    --architectures i386 \
+    --linux-flavours "486" \
+    --archive-areas "main contrib non-free" \
+    --mirror-bootstrap "http://archive.debian.org/debian/" \
+    --mirror-chroot "http://archive.debian.org/debian/" \
+    --mirror-binary "http://archive.debian.org/debian/" \
+    --security false \
+    --updates false \
+    --backports false \
     --apt-recommends false \
-    --memtest none \
-    --iso-volume ETHEREUM \
-    --image-name ethereum \
-    --iso-application "Memy Linux" \
-    --iso-publisher "Memy Project" \
-    --iso-preparer "ETHEREUM Build System"
+    --apt-options "--yes -o Acquire::Check-Valid-Until=false" \
+    --debian-installer live \
+    --iso-application "ETHEREUM Linux Retro" \
+    --iso-volume "ETHEREUM_RETRO" \
+    "${@}"

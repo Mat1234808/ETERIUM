@@ -1,0 +1,51 @@
+# Ambiente grafico ultra-leve (IceWM + LightDM + Xorg)
+xorg
+xserver-xorg-video-all
+xserver-xorg-input-all
+icewm
+icewm-themes
+lightdm
+lightdm-gtk-greeter
+
+# Gerenciador de arquivos, terminal e rede
+pcmanfm
+gvfs
+lxterminal
+wicd
+wicd-gtk
+
+# Navegadores web e certificados
+netsurf-gtk
+dillo
+iceweasel
+iceweasel-l10n-pt-br
+ca-certificates
+
+# Documentos, escritorio leve, imagens e compactadores
+epdfview
+gpicview
+leafpad
+abiword
+gnumeric
+xarchiver
+unzip
+p7zip-full
+
+# Audio (ALSA puro) e player de midia
+alsa-base
+alsa-utils
+volumeicon-alsa
+gnome-mplayer
+
+# Firmwares e drivers legados (rede, Wi-Fi, GPU)
+firmware-linux-free
+firmware-linux-nonfree
+firmware-ralink
+firmware-realtek
+firmware-atheros
+firmware-iwlwifi
+firmware-brcm80211
+firmware-b43-installer
+firmware-libertas
+firmware-zd1211
+bluez-firmware
