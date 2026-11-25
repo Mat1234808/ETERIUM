@@ -28,7 +28,7 @@ build_branch() {
     sudo ./auto/clean
     sudo rm -rf cache/ .build/
     sudo nice -n 19 ./auto/build
-    ISO_FOUND=$(ls -1 live-image-*.hybrid.iso 2>/dev/null | head -n 1)
+    ISO_FOUND=$(ls -1 ethereum-*.hybrid.iso live-image-*.hybrid.iso 2>/dev/null | head -n 1)
     if [ -z "$ISO_FOUND" ]; then
         echo "ERRO: Nenhuma ISO gerada na branch $BRANCH"
         exit 1
