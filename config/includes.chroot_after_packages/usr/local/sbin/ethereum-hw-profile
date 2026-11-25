@@ -44,14 +44,40 @@ else
     fi
 fi
 
+# Configura ZRAM apenas para o perfil intermediario (XFCE)
+ZRAM_STATE="disabled"
+if [ "$PROFILE" = "xfce" ]; then
+    ZRAM_STATE="enabled"
+    cat > /etc/default/zramswap << ZRAM
+ALGO=zstd
+PERCENT=50
+PRIORITY=100
+ZRAM
+    if [ -d /run/systemd/system ]; then
+        systemctl enable --now zramswap.service >/dev/null 2>&1 || systemctl restart zramswap.service >/dev/null 2>&1 || true
+    fi
+else
+    if [ -d /run/systemd/system ]; then
+        systemctl disable --now zramswap.service >/dev/null 2>&1 || true
+    fi
+fi
+
 mkdir -p /etc/lightdm/lightdm.conf.d
-cat > /etc/lightdm/lightdm.conf.d/50-ethereum-session.conf << CONF
+if id -u user >/dev/null 2>&1; then
+    cat > /etc/lightdm/lightdm.conf.d/50-ethereum-session.conf << CONF
 [Seat:*]
 autologin-user=user
 autologin-user-timeout=0
 user-session=$PROFILE
 greeter-session=lightdm-gtk-greeter
 CONF
+else
+    cat > /etc/lightdm/lightdm.conf.d/50-ethereum-session.conf << CONF
+[Seat:*]
+user-session=$PROFILE
+greeter-session=lightdm-gtk-greeter
+CONF
+fi
 
 cat > /run/ethereum-hw-profile.env << ENV
 ETHEREUM_PROFILE="$PROFILE"
@@ -59,8 +85,9 @@ ETHEREUM_SESSION="$PROFILE"
 ETHEREUM_MEM_MB="$MEM_MB"
 ETHEREUM_CPU_CORES="$CPU_CORES"
 ETHEREUM_HAS_DRM="$HAS_DRM"
+ETHEREUM_ZRAM="$ZRAM_STATE"
 ETHEREUM_REASON="$REASON"
 ETHEREUM_GPU="$GPU_INFO"
 ENV
 
-echo "ETHEREUM HW Profile (64-bit): profile=$PROFILE mem=${MEM_MB}MB drm=$HAS_DRM ($REASON)"
+echo "ETHEREUM HW Profile (64-bit): profile=$PROFILE zram=$ZRAM_STATE mem=${MEM_MB}MB ($REASON)"
