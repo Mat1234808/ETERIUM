@@ -21,3 +21,4 @@
 binary.modified_timestamps
 chroot.packages.*
 *.sha256
+all-in-one-build/
