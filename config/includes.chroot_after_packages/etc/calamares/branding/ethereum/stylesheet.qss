@@ -1,0 +1,32 @@
+/* Barra lateral e etapa atual */
+#sidebarApp {
+    background-color: #1e222a;
+    color: #d3dae3;
+}
+
+/* Botoes principais (Proximo, Instalar) */
+QPushButton {
+    background-color: #2f343f;
+    color: #ffffff;
+    border: 1px solid #404552;
+    border-radius: 4px;
+    padding: 6px 14px;
+}
+
+QPushButton:hover {
+    background-color: #5294e2;
+    border-color: #5294e2;
+}
+
+/* Barra de progresso da instalacao */
+QProgressBar {
+    border: 1px solid #404552;
+    border-radius: 4px;
+    text-align: center;
+    background-color: #2f343f;
+    color: #ffffff;
+}
+
+QProgressBar::chunk {
+    background-color: #5294e2;
+}

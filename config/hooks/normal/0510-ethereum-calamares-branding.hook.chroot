@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+if [ -f /etc/calamares/settings.conf ]; then
+    sed -i 's/^branding:.*/branding: ethereum/' /etc/calamares/settings.conf
+fi
+
+for desktop_file in /usr/share/applications/install-debian.desktop /etc/skel/Desktop/install-debian.desktop; do
+    if [ -f "$desktop_file" ]; then
+        sed -i 's/^Name=.*/Name=Instalar ETHEREUM Linux/' "$desktop_file"
+        sed -i 's/^Name\[pt_BR\]=.*/Name[pt_BR]=Instalar ETHEREUM Linux/' "$desktop_file"
+        sed -i 's|^Icon=.*|Icon=/etc/calamares/branding/ethereum/logo.svg|' "$desktop_file"
+    fi
+done

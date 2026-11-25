@@ -1,0 +1,37 @@
+# Microcodes de CPU (Intel e AMD)
+intel-microcode
+amd64-microcode
+
+# Firmwares gerais de chipset, armazenamento, USB e kernel
+firmware-linux
+firmware-linux-free
+firmware-linux-nonfree
+firmware-misc-nonfree
+
+# Placas graficas (Intel, AMD, Nvidia open-source e GPUs legadas)
+firmware-amd-graphics
+xserver-xorg-video-all
+xserver-xorg-input-all
+mesa-vulkan-drivers
+mesa-va-drivers
+i965-va-driver
+intel-media-va-driver
+
+# Placas de rede Wi-Fi, Ethernet e Bluetooth
+firmware-iwlwifi
+firmware-realtek
+firmware-atheros
+firmware-brcm80211
+firmware-b43-installer
+firmware-libertas
+firmware-zd1211
+firmware-ti-connectivity
+firmware-bnx2
+firmware-bnx2x
+firmware-qlogic
+bluez-firmware
+
+# Audio
+firmware-sof-signed
+alsa-ucm-conf
+alsa-utils
