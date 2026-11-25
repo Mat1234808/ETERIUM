@@ -11,47 +11,25 @@ if ls /dev/dri/card* >/dev/null 2>&1; then
     HAS_DRM=1
 fi
 
-CMDLINE_PROFILE=""
-for param in $(cat /proc/cmdline); do
-    case "$param" in
-        ethereum.profile=*)
-            CMDLINE_PROFILE="${param#ethereum.profile=}"
-            ;;
-    esac
-done
-
 PROFILE="xfce"
-REASON="Perfil intermediario/fallback 64-bit"
-
-if [ -n "$CMDLINE_PROFILE" ]; then
-    case "$CMDLINE_PROFILE" in
-        cinnamon)
-            PROFILE="cinnamon"
-            REASON="Forcado via boot (ethereum.profile=cinnamon)"
-            ;;
-        xfce)
-            PROFILE="xfce"
-            REASON="Forcado via boot (ethereum.profile=xfce)"
-            ;;
-    esac
-else
-    if [ "$HAS_DRM" -eq 1 ] && [ "$MEM_MB" -ge 4096 ] && [ "$CPU_CORES" -ge 2 ]; then
-        PROFILE="cinnamon"
-        REASON="RAM >= 4 GB (${MEM_MB} MB) com aceleracao DRM"
-    else
-        PROFILE="xfce"
-        REASON="RAM abaixo de 4 GB (${MEM_MB} MB) ou sem aceleracao DRM"
-    fi
-fi
+REASON="Edicao 32-bit (i386) - Perfil leve XFCE"
 
 mkdir -p /etc/lightdm/lightdm.conf.d
-cat > /etc/lightdm/lightdm.conf.d/50-ethereum-session.conf << CONF
+if id -u user >/dev/null 2>&1; then
+    cat > /etc/lightdm/lightdm.conf.d/50-ethereum-session.conf << CONF
 [Seat:*]
 autologin-user=user
 autologin-user-timeout=0
 user-session=$PROFILE
 greeter-session=lightdm-gtk-greeter
 CONF
+else
+    cat > /etc/lightdm/lightdm.conf.d/50-ethereum-session.conf << CONF
+[Seat:*]
+user-session=$PROFILE
+greeter-session=lightdm-gtk-greeter
+CONF
+fi
 
 cat > /run/ethereum-hw-profile.env << ENV
 ETHEREUM_PROFILE="$PROFILE"
@@ -63,4 +41,4 @@ ETHEREUM_REASON="$REASON"
 ETHEREUM_GPU="$GPU_INFO"
 ENV
 
-echo "ETHEREUM HW Profile (64-bit): profile=$PROFILE mem=${MEM_MB}MB drm=$HAS_DRM ($REASON)"
+echo "ETHEREUM HW Profile (32-bit): profile=$PROFILE mem=${MEM_MB}MB drm=$HAS_DRM ($REASON)"

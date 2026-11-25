@@ -7,8 +7,9 @@ PATH="$LIVE_BUILD/frontend:$PATH"
 export LIVE_BUILD PATH
 
 "$LIVE_BUILD/frontend/lb" config noauto \
-    --distribution trixie \
-    --architectures amd64 \
+    --distribution bookworm \
+    --architectures i386 \
+    --linux-flavours "686-pae" \
     --binary-images iso-hybrid \
     --debian-installer none \
     --archive-areas "main contrib non-free non-free-firmware" \

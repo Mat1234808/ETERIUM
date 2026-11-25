@@ -15,7 +15,6 @@ xserver-xorg-input-all
 mesa-vulkan-drivers
 mesa-va-drivers
 i965-va-driver
-intel-media-va-driver
 
 # Placas de rede Wi-Fi, Ethernet e Bluetooth
 firmware-iwlwifi
