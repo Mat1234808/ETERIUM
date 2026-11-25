@@ -14,7 +14,8 @@ lb config noauto \
     --updates false \
     --backports false \
     --apt-recommends false \
-    --apt-options "--yes -o Acquire::Check-Valid-Until=false" \
+    --apt-options "--yes --allow-unauthenticated -o Acquire::Check-Valid-Until=false" \
+    --debootstrap-options "--no-check-gpg" \
     --debian-installer live \
     --iso-application "ETHEREUM Linux Retro" \
     --iso-volume "ETHEREUM_RETRO" \
