@@ -6,6 +6,8 @@ OUT_DIR="$WORK_DIR/all-in-one-build"
 ISO_ROOT="$OUT_DIR/iso_root"
 FINAL_ISO="$WORK_DIR/ETHEREUM-Linux-Complete-AllInOne.iso"
 
+run_git() { if [ -n "${SUDO_USER:-}" ]; then sudo -u "$SUDO_USER" git "$@"; else git "$@"; fi; }
+
 mkdir -p "$OUT_DIR"
 
 build_branch() {
@@ -22,7 +24,7 @@ build_branch() {
     echo "===================================================="
     echo ">>> Compilando branch: $BRANCH"
     echo "===================================================="
-    git checkout "$BRANCH"
+    run_git checkout "$BRANCH"
     sudo ./auto/clean
     sudo rm -rf cache/ .build/
     sudo nice -n 19 ./auto/build
@@ -39,7 +41,7 @@ build_branch "main" "$OUT_DIR/ethereum-amd64.iso"
 build_branch "arch-i386" "$OUT_DIR/ethereum-i686.iso"
 build_branch "retro-i486" "$OUT_DIR/ethereum-i486.iso"
 
-git checkout main
+run_git checkout main
 
 # 2. Limpa montagem anterior (se houver) e extrai a estrutura base (UEFI + BIOS)
 echo ">>> Montando estrutura unificada da ISO..."
