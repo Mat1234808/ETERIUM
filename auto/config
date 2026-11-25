@@ -9,7 +9,7 @@ export LIVE_BUILD PATH
 "$LIVE_BUILD/frontend/lb" config noauto \
     --distribution bookworm \
     --architectures i386 \
-    --linux-flavours "686-pae" \
+    --linux-flavours "686-pae 686" \
     --binary-images iso-hybrid \
     --debian-installer none \
     --archive-areas "main contrib non-free non-free-firmware" \
